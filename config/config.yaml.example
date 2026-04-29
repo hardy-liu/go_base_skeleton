@@ -1,0 +1,80 @@
+app:
+  name: go_base_skeleton
+  env: development  # development | production
+
+server:
+  api:
+    port: 8080
+    read_timeout: 10s
+    write_timeout: 10s
+  admin:
+    port: 8081
+    read_timeout: 10s
+    write_timeout: 10s
+
+database:
+  host: 
+  port: 3306
+  user: 
+  password:
+  dbname:
+  charset: utf8mb4
+  max_open_conns: 30
+  max_idle_conns: 10
+  max_lifetime: 3600s
+  max_idletime: 600s
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
+  db: 0
+  pool_size: 80
+
+jwt:
+  secret: ""
+  expire: 7200   # seconds
+  issuer: go_base_skeleton
+
+log:
+  level: debug    # debug | info | warn | error
+  dir: ./log
+  max_size: 1024     # MB，单文件超过后 lumberjack 轮转（同日）
+  max_backups: 30    # 保留的备份文件个数
+  max_age: 30        # 天，超过的备份删除
+
+ratelimit:
+  enabled: true
+  rate: 120       # max requests per window
+  window: 60s
+  burst: 10       # 令牌桶容量；省略或 <=0 时按 10 处理
+
+event:
+  # 与顶层 redis 字段相同；通常同 host、不同 db，便于与缓存/锁隔离，扩展时只改配置即可。
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    db: 1
+    pool_size: 40
+  stream_prefix: "go_base_skeleton:events"
+  consumer_group: "go_base_skeleton-group"
+  consumer_name: "worker-1"
+  batch_size: 10
+  block_time: 3s
+  shutdown_timeout: 10s
+
+# 显式多路告警（内嵌 Notifier）：见 ai_specs/feature-alert-notifier/SPEC.md 
+# 敏感项可经环境变量覆盖： ALERT_TELEGRAM_BOT_TOKEN, ALERT_TELEGRAM_CHAT_ID, ALERT_WEBHOOK_URL
+alert:
+  enabled: true
+  dedup_enabled: true
+  dedup_window: 60s
+  default_sink_timeout: 5s
+  telegram:
+    enabled: false
+    bot_token: ""
+    chat_id: ""
+  webhook:
+    enabled: false
+    url: ""

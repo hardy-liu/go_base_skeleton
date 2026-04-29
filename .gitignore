@@ -1,0 +1,23 @@
+.vscode/
+.cursor/
+.claude/
+.cursorignore
+.idea/
+.DS_Store
+.gocache/
+.gomodcache/
+.gocache_local/
+*.code-workspace
+
+ai_specs/AGENTS.md
+
+# Binaries
+# bin/
+
+# Environment & secrets
+.env
+config/config.yaml
+
+# Go
+tmp/
+vendor/
